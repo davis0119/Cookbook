@@ -12,14 +12,21 @@ class Recipe(BaseModel):
     cuisine: str
     url: str
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "cuisine": self.cuisine,
+            "url": self.url,
+        }
+
 recipes = []
 
 @app.route('/recipes', methods=['POST'])
 def create_recipe():
     data = request.get_json()
     recipe = Recipe(**data)
-    recipes.append(recipe)
-    return jsonify(recipe)
+    recipes.append(recipe.to_dict())
+    return jsonify(recipe.to_dict())
 
 @app.route('/recipes', methods=['GET'])
 def get_recipes():
