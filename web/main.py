@@ -1,9 +1,7 @@
 import os
-import secrets
 
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from redis import Redis
@@ -12,14 +10,7 @@ app = FastAPI()
 conn = Redis.from_url(os.getenv("REDIS_URL", "redis://exampleredisuri/0"))
 templates = Jinja2Templates(directory="/templates")
 
-security = HTTPBasic()
 auth_required = os.getenv("AUTH_REQUIRED", "false").lower() in ["true", "t"]
-
-
-def get_admin_username(credentials: HTTPBasicCredentials = Depends(security)) -> str:
-    if not auth_required:
-        return "guestuser"
-    return credentials.username
 
 
 @app.get("/hello")
@@ -38,7 +29,6 @@ class Recipe(BaseModel):
             "cuisine": self.cuisine,
             "url": self.url,
         }
-recipes = []
 
 
 @app.post("/recipe")
@@ -51,10 +41,10 @@ def add_recipe(recipe: Recipe):
 @app.get("/recipe")
 def get_recipe(name: str):
     if len(name) == 0:
-        raise HTTPException(status_code=400, detail="Please search for a valid recipe.")
+        raise HTTPException(status_code=400, detail="Invalid recipe.")
     value = conn.get(name)
     if value is None:
-        raise HTTPException(status_code=404, detail="We do not have the details for this recipe.")
+        raise HTTPException(status_code=404, detail="Recipe does not exist.")
 
     return {"name": name, "recipe": value}
 
@@ -71,46 +61,3 @@ def get_info(request: Request):
     return templates.TemplateResponse(
         "info.html.j2", {"request": request, "recipes": recipe_dict}
     )
-
-
-
-
-
-
-
-
-
-
-# class Bender(BaseModel):
-#     name: str
-#     element: str
-
-# @app.post("/bender")
-# def add_bender(bender: Bender):
-#     conn.set(bender.name, bender.element)
-#     return {"message": f"Set element for {bender.name}!"}
-
-
-# @app.get("/bender")
-# def get_bender(name: str):
-#     if len(name) == 0:
-#         raise HTTPException(status_code=400, detail="Bender must have a name.")
-#     value = conn.get(name)
-#     if value is None:
-#         raise HTTPException(status_code=404, detail="bender not found.")
-
-#     return {"name": name, "element": value}
-
-
-# @app.get("/info", response_class=HTMLResponse)
-# def get_info(request: Request):
-#     bender_names = conn.keys()
-#     bender_dict = dict(
-#         [
-#             (name.decode("utf-8"), conn.get(name).decode("utf-8"))
-#             for name in bender_names
-#         ]
-#     )
-#     return templates.TemplateResponse(
-#         "info.html.j2", {"request": request, "benders": bender_dict}
-#     )
