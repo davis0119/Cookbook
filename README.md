@@ -1,4 +1,4 @@
-# Homework 2 - Local Kubernetes
+# Cookbook | Docker, Local Kubernetes, CI/CD
 
 Before you get started on this assignment, make sure you've watched the lectures on Kubernetes! Also, make sure to install the requisite components for the assignment:
 
