@@ -22,4 +22,6 @@ jobs:
         poetry run pytest
     - name: Run linter
       run: |
+        cd web
+        poetry install
         poetry run flake8
