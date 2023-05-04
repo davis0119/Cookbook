@@ -101,7 +101,7 @@ $ curl -u "blah:blah" 'localhost:8000/bender?name=Katara'
 
 # For recipes: 
 $ curl -u "blah:blah" -H "Content-Type: application/json" --request POST --data '{"name": "spaghetti", "cuisine": "italian", "url": "food.com"}' http://localhost:8000/recipe
-$ curl -u "blah:blah" 'localhost:8000/recipe?name="spaghetti"'
+$ curl -u "blah:blah" 'localhost:8000/recipe?name=spaghetti'
 ```
 
 The snippet `-u "blah:blah"` is required because our FastAPI endpoints in this homework are secured with [Basic HTTP Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). In the last part of the homework we'll add functionality to check for a proper username/password combo, but until then, we can provide any combination we'd like as long as the `Authorization: Basic` header is included with our request.
