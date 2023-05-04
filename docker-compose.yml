@@ -1,14 +1,14 @@
-version: "3.9"
+version: "3"
 
 services:
-  redis:
-    image: redis:latest
-
-  web:
-    build: .
+  cookbook_web:
+    image: cis1880-cookbook:v1
+    command: poetry run uvicorn main:app --host 0.0.0.0 --port 8000
     ports:
-      - 127.0.0.1:5000:5000
-    volumes:
-      - .:/code
-    environment:
-      REDIS_URL: redis://redis/0
+      - "8000:8000"
+    depends_on:
+      - cookbook_redis
+
+  cookbook_redis:
+    image: redis:latest
+    command: ["redis-server", "--appendonly", "yes"]

@@ -1,16 +1,12 @@
 [tool.poetry]
-name = "Cookbook"
+name = "cis188-cookbook-cronjob"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-fastapi = "^0.61.1"
-uvicorn = "^0.11.8"
 redis = "^3.5.3"
-jinja2 = "^2.11.2"
-pytest = "^7.2.2"
 
 [tool.poetry.dev-dependencies]
 
