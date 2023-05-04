@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: template-map
+data:
+  info.html.j2: |-
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.1/css/bulma.min.css" />
+    </head>
+    <body>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Recipe Name</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+    {% for name, element in recipes.items() %}
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ element }}</td>
+        </tr>
+    {% endfor %}
+      </tbody>
+    </table>
+    </body>
+    </html>

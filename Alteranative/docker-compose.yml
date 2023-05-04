@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  cookbook_web:
+    image: cis1880-cookbook-web:v1
+    command: poetry run uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./templates:/app/templates
+    environment:
+      REDIS_HOST: 172.18.0.2
+    depends_on:
+      - cookbook_redis
+
+  cookbook_redis:
+    image: redis:latest
+    command: ["redis-server", "--appendonly", "yes"]
+
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 2749d18fc2a1
+# 172.18.0.2
+# redis-74c96bd4d-lm4cq 
+# docker ps
+# docker exec -it <redis-container-id> sh
+
+# docker exec -it 2749d18fc2a1 sh
+# config set bind * -::*
