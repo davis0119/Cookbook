@@ -54,7 +54,7 @@ Try some of these commands out to get a feel for what the cluster looks like:
 Now that you've got a cluster up, make sure to load in our docker image:
 
 ```
-$ docker build web -t cis1880-cookbook-web:v1
+$ docker build web -t cis1880-cookbook:v1
 $ kind load docker-image cis1880-cookbook-web:v1 --name cis188
 ```
 
